@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Programmering\\Code\\Yatzy project\\",
+  "WorkspaceRootPath": "D:\\Programmering\\Git\\Gruppe10UCL\\Yatzy project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9AAC469C-9B1B-451F-84AB-0B0F02D7CF19}|Yatzy project\\Yatzy project.csproj|d:\\programmering\\code\\yatzy project\\yatzy project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{9AAC469C-9B1B-451F-84AB-0B0F02D7CF19}|Yatzy project\\Yatzy project.csproj|d:\\programmering\\git\\gruppe10ucl\\yatzy project\\yatzy project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9AAC469C-9B1B-451F-84AB-0B0F02D7CF19}|Yatzy project\\Yatzy project.csproj|solutionrelative:yatzy project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,21 +14,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{26341fe2-71dd-46fd-bb1b-2e51a92a0d64}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Programmering\\Code\\Yatzy project\\Yatzy project\\Program.cs",
+              "DocumentMoniker": "D:\\Programmering\\Git\\Gruppe10UCL\\Yatzy project\\Yatzy project\\Program.cs",
               "RelativeDocumentMoniker": "Yatzy project\\Program.cs",
-              "ToolTip": "D:\\Programmering\\Code\\Yatzy project\\Yatzy project\\Program.cs",
+              "ToolTip": "D:\\Programmering\\Git\\Gruppe10UCL\\Yatzy project\\Yatzy project\\Program.cs",
               "RelativeToolTip": "Yatzy project\\Program.cs",
-              "ViewState": "AQIAAC0AAAAAAAAAAAAQwDsAAAAbAAAA",
+              "ViewState": "AQIAAPQAAAAAAAAAAAAAAHUBAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-23T08:59:31.167Z",
               "EditorCaption": ""

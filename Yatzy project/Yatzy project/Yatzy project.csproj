@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="D:\Programmering\Git\Gruppe10UCL\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
 </Project>
