@@ -11,139 +11,70 @@ namespace Yatzy_project
 
         static void Main(string[] args)
         {
-            bool gameProgress = true;
-            //int playerAmount = Int.Parse(Console.ReadLine());
-            //string[] playerName = new string[playerAmount];
-            string spiller1Navn = "Spiller 1";
-            while(gameProgress)
+            int kørteRunder = 0;
+            string spiller1Navn = "Spiller 1";  //Bruger input senere
+            string spiller2Navn = "Spiller 2";
+            int[] spiller1Scoreboard = new int[15] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            int[] spiller2Scoreboard = new int[15] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            while (kørteRunder <= 15) //antal runder den skal køre
             {
-                int valgtePar;
-                int valgtPar2;
-                int valgteSum;
                 int[] terningerVærdi = new int[5] { 0, 0, 0, 0, 0 };
                 bool[] erTerningerLåst = new bool[5] { false, false, false, false, false }; //Skal alle sættes til falsk før vi bruger dem
                 bool kasterTerninger = true;
                 int tilbageVærendeTerninger = 5;
                 int kastNummer = 0;
-                int sum1, sum2, sum3, sum4, sum5, sum6;
-                int[] spiller1Scoreboard = new int[15];
-                //int[] spiller2Scoreboard = new int[15];
-                while (kasterTerninger == true)
+
+                while (kasterTerninger)
                 {
                     kastNummer++;
-
                     //Kald metoden med disse værdier
                     KastTerninger(terningerVærdi, erTerningerLåst);
                     LåsTerninger(kastNummer, erTerningerLåst);
 
-                    if (kastNummer == 3 || tilbageVærendeTerninger == 0) kasterTerninger = false;
-
+                    if (kastNummer == 3 || tilbageVærendeTerninger == 0)
+                    {
+                        kasterTerninger = false;
+                        scoreboard1(terningerVærdi, spiller1Navn, spiller1Scoreboard);
+                    }
                 }
 
+                visScoreboard(spiller1Navn, spiller1Scoreboard);
+                Console.WriteLine("Tryk Enter for at fortsætte.");
+                Console.ReadLine();
+                Console.Clear();
 
-                kasterTerninger = true; //Bruges for nu, bør have en anden bool til det, eller omnavngive
+                terningerVærdi = new int[5] { 0, 0, 0, 0, 0 };
+                erTerningerLåst = new bool[5] { false, false, false, false, false };
+                kasterTerninger = true;
+                tilbageVærendeTerninger = 5;
+                kastNummer = 0;
 
-                //1ere, 2ere, 3ere, 4ere, 5ere, 6ere, 1par, 2par, 3ens, 4ens, hus, lillestraight (+15), storestraight (+20), chancen, yatzy (+50)
-                //Score af 63 eller over i 1ere til 6ere giver (+50)
-
-                terningerVærdi = new int[] { 5, 5, 4, 2, 2 };
-                Console.WriteLine("ClearCheck");
                 while (kasterTerninger)
                 {
-                    Console.Clear();
-                    Console.WriteLine(spiller1Navn);  //Sæt til variable
-                    Console.WriteLine("-|-a-1ere-|-b-2ere-|-c-3ere-|-d-4ere-|-e-5ere-|-f-6ere-|-g-1par-|-h-2par-|-i-3ens-|-j-4ens-|-");
-                    Console.WriteLine("-|-    00-|-    00-|-    00-|-    00-|-    00-|-    00-|-    00-|-    00-|-    00-|-    00-|-");
-                    Console.WriteLine("-|-k-lille straight-|-l-store straight-|-m-chancen-|-n-yatzy-|---|-total-|-");
-                    Console.WriteLine("-|-(15)          00-|-(20)          00-|-       00-|-(50) 00-|---|-   00-|-");
+                    kastNummer++;
+                    //Kald metoden med disse værdier
+                    KastTerninger(terningerVærdi, erTerningerLåst);
+                    LåsTerninger(kastNummer, erTerningerLåst);
 
-                    sum1 = SumOfNumberOfEyes(1, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-                    sum2 = SumOfNumberOfEyes(2, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-                    sum3 = SumOfNumberOfEyes(3, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-                    sum4 = SumOfNumberOfEyes(4, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-                    sum5 = SumOfNumberOfEyes(5, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-                    sum6 = SumOfNumberOfEyes(6, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
-
-                    for (int i = 0; i < 5; i++)
+                    if (kastNummer == 3 || tilbageVærendeTerninger == 0)
                     {
-                        Console.WriteLine("Terning {0}: {1}", (i + 1), terningerVærdi[i]);
-                    }
-
-                    //parCheck(sum1, sum2, sum3, sum4, sum5, sum6);
-
-                    Console.Write("Vælg et punkt");
-                    char valgteVærdi = Convert.ToChar(Console.ReadLine());
-                    switch (valgteVærdi)
-                    {
-                        case 'a':
-                            spiller1Scoreboard[0] = sum1;
-                            Console.WriteLine("Du valgte 1ere: {0} ", spiller1Scoreboard[0]);
-                            break;
-                        case 'b':
-                            spiller1Scoreboard[1] = sum2 * 2;
-                            Console.WriteLine("Du valgte 2ere: {0} ", spiller1Scoreboard[1]);
-                            break;
-                        case 'c':
-                            spiller1Scoreboard[2] = sum3 * 3;
-                            Console.WriteLine("Du valgte 3ere: {0} ", spiller1Scoreboard[2]);
-                            break;
-                        case 'd':
-                            spiller1Scoreboard[3] = sum4 * 4;
-                            Console.WriteLine("Du valgte 4ere: {0} ", spiller1Scoreboard[3]);
-                            break;
-                        case 'e':
-                            spiller1Scoreboard[4] = sum5 * 5;
-                            Console.WriteLine("Du valgte 5ere: {0} ", spiller1Scoreboard[4]);
-                            break;
-                        case 'f':
-                            spiller1Scoreboard[5] = sum6 * 6;
-                            Console.WriteLine("Du valgte 6ere: {0} ", spiller1Scoreboard[5]);
-                            break;
-                        /*case 'g':
-                            SumOf1Pair(6, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte 1par: {0} ", spiller1Scoreboard[6]);
-                            break;
-                        case 'h':
-                            //valgtePar = Convert.ToInt32(Console.ReadLine());
-                            //valgtePar2 = Convert.ToInt32(Console.ReadLine());
-                            //spiller1Scoreboard[7] = ;
-                            SumOf2Pair(7, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte 2par: {0} ", spiller1Scoreboard[7]);
-                            break;*/
-                        /*case 'i':
-                            SumOf(8, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte : {0} ", spiller1Scoreboard[8]);
-                            break;
-                        case 'j':
-                            SumOf(9, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte : {0} ", spiller1Scoreboard[9]);
-                            break;
-                        case 'k':
-                            SumOf(10, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte : {0} ", spiller1Scoreboard[10]);
-                            break;
-                        case 'l':
-                            SumOf(11, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
-                            Console.WriteLine("Du valgte : {0} ", spiller1Scoreboard[11]);
-                            break;*/
-
-
-
-
-
+                        kasterTerninger = false;
+                        scoreboard2(terningerVærdi, spiller2Navn, spiller2Scoreboard);
                     }
                 }
 
-                for (int i = 0; i < 5; i++)
+                visScoreboard(spiller2Navn, spiller2Scoreboard);
+                Console.WriteLine("Tryk Enter for at fortsætte.");
+                Console.ReadLine();
+                Console.Clear();
+
+                kørteRunder += 1;
+                if(kørteRunder == 15)
                 {
-                    Console.WriteLine(terningerVærdi[i]);
+                    Console.Write("Spillet er slut");
+                    visScoreboard(spiller1Navn, spiller1Scoreboard);
+                    visScoreboard(spiller2Navn, spiller2Scoreboard);
                 }
-
-
-
-                Console.Write("Spillet er slut");
-                gameProgress = false;
-
 
 
             }
@@ -231,111 +162,9 @@ namespace Yatzy_project
             }
         }
 
-        static void SumOf2Pair(int i, int[] spiller1Scoreboard, int sum1, int sum2, int sum3, int sum4, int sum5, int sum6)
-        {
-            if (sum6 > 1)
-            {
-                if (sum5 > 1)
-                {
-                    spiller1Scoreboard[i] = 6 * 2 + 5 * 2;
-                }
-                else if (sum4 > 1)
-                {
-                    spiller1Scoreboard[i] = 6 * 2 + (4 * 2);
-                }
-                else if (sum3 > 1)
-                {
-                    spiller1Scoreboard[i] = 6 * 2 + (3 * 2);
-                }
-                else if (sum2 > 1)
-                {
-                    spiller1Scoreboard[i] = 6 * 2 + (2 * 2);
-                }
-                else if (sum1 > 1)
-                {
-                    spiller1Scoreboard[i] = 6 * 2 + (1 * 2);
-                }
-                else
-                {
-                    spiller1Scoreboard[i] = 0;
-                }
 
-            }
-            else if (sum5 > 1)
-            {
-                if (sum4 > 1)
-                {
-                    spiller1Scoreboard[i] = 5 * 2 + (4 * 2);
-                }
-                else if (sum3 > 1)
-                {
-                    spiller1Scoreboard[i] = 5 * 2 + (3 * 2);
-                }
-                else if (sum2 > 1)
-                {
-                    spiller1Scoreboard[i] = 5 * 2 + (2 * 2);
-                }
-                else if (sum1 > 1)
-                {
-                    spiller1Scoreboard[i] = 5 * 2 + (1 * 2);
-                }
-                else
-                {
-                    spiller1Scoreboard[i] = 0;
-                }
-            }
-            else if (sum4 > 1)
-            {
-                if (sum3 > 1)
-                {
-                    spiller1Scoreboard[i] = 4 * 2 + (3 * 2);
-                }
-                else if (sum2 > 1)
-                {
-                    spiller1Scoreboard[i] = 4 * 2 + (2 * 2);
-                }
-                else if (sum1 > 1)
-                {
-                    spiller1Scoreboard[i] = 4 * 2 + (1 * 2);
-                }
-                else
-                {
-                    spiller1Scoreboard[i] = 0;
-                }
-            }
-            else if (sum3 > 1)
-            {
-                if (sum2 > 1)
-                {
-                    spiller1Scoreboard[i] = 3 * 2 + (2 * 2);
-                }
-                else if (sum1 > 1)
-                {
-                    spiller1Scoreboard[i] = 3 * 2 + (1 * 2);
-                }
-                else
-                {
-                    spiller1Scoreboard[i] = 0;
-                }
-            }
-            else if (sum2 > 1)
-            {
-                if (sum1 > 1)
-                {
-                    spiller1Scoreboard[i] = 2 * 2 + (1 * 2);
-                }
-                else
-                {
-                    spiller1Scoreboard[i] = 0;
-                }
-            }
-            else
-            {
-                spiller1Scoreboard[i] = 0;
-            }
-        }
 
-        /*static bool[] parCheck(int sum1, int sum2, int sum3, int sum4, int sum5, int sum6)
+        static bool[] parCheck(int sum1, int sum2, int sum3, int sum4, int sum5, int sum6)
         {
             int parVærdi = 2;
             bool par1 = false, par2 = false, par3 = false, par4 = false, par5 = false, par6 = false;
@@ -364,14 +193,440 @@ namespace Yatzy_project
             }
             if (parVærdi <= sum6)
             {
-                par6 = true;
+                par6 = true;  
             }
 
-            bool[] muligePar = {par1, par2, par3, par4, par5, par6};
-            Console.WriteLine(Convert.ToString(muligePar));
+            bool[] muligePar = {par1, par2, par3, par4, par5, par6};  
+            Console.WriteLine(string.Join(", ",muligePar));
             return muligePar;
-            }*/
+        }
+        
+        static void visScoreboard(string spillerXNavn, int[] spillerXScoreboard)
+        {
 
+            Console.WriteLine("Tryk Enter for at fortsætte.");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine(spillerXNavn);  //Sæt til variable
+            Console.WriteLine("-|-a-1ere-|-b-2ere-|-c-3ere-|-d-4ere-|-e-5ere-|-f-6ere-|-g-1par-|-h-2par-|-i-3ens-|-j-4ens-|-");
+            Console.WriteLine("-|-   {0,3}-|-   {1,3}-|-   {2,3}-|-   {3,3}-|-   {4,3}-|-   {5,3}-|-   {6,3}-|-   {7,3}-|-   {8,3}-|-   {9,3}-|-",
+            spillerXScoreboard[0], spillerXScoreboard[1], spillerXScoreboard[2], spillerXScoreboard[3], spillerXScoreboard[4],
+            spillerXScoreboard[5], spillerXScoreboard[6], spillerXScoreboard[7], spillerXScoreboard[8], spillerXScoreboard[9]);
+            Console.WriteLine("|-k-lille straight-|l-store straight-|-m-chancen-|-n-yatzy-|---|-total---|-");
+            Console.WriteLine("|-(15)         {0,3}-|(20)         {1,3}-|-      {2,3}-|-(50){3,3}-|---|-  {4,3}---|-",
+            spillerXScoreboard[10], spillerXScoreboard[11], spillerXScoreboard[12], spillerXScoreboard[13], spillerXScoreboard[14]);
+
+        }
+
+        static int[] scoreboard1(int[] terningerVærdi, string spiller1Navn, int[] spiller1Scoreboard)
+        {
+            int sum1, sum2, sum3, sum4, sum5, sum6;
+
+            sum1 = SumOfNumberOfEyes(1, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum2 = SumOfNumberOfEyes(2, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum3 = SumOfNumberOfEyes(3, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum4 = SumOfNumberOfEyes(4, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum5 = SumOfNumberOfEyes(5, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum6 = SumOfNumberOfEyes(6, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+
+
+
+
+            Console.WriteLine("Tryk Enter for at fortsætte.");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine(spiller1Navn);  //Sæt til variable
+            Console.WriteLine("-|-a-1ere-|-b-2ere-|-c-3ere-|-d-4ere-|-e-5ere-|-f-6ere-|-g-1par-|-h-2par-|-i-3ens-|-j-4ens-|-");
+            Console.WriteLine("-|-   {0}-|-   {1}-|-   {2}-|-   {3}-|-   {4}-|-   {5}-|-   {6}-|-   {7}-|-   {8}-|-   {9}-|-",
+            spiller1Scoreboard[0], spiller1Scoreboard[1], spiller1Scoreboard[2], spiller1Scoreboard[3], spiller1Scoreboard[4], 
+            spiller1Scoreboard[5], spiller1Scoreboard[6], spiller1Scoreboard[7], spiller1Scoreboard[8], spiller1Scoreboard[9]);
+            Console.WriteLine("-|-k-lille straight-|-l-store straight-|-m-chancen-|-n-yatzy-|---|-total 1-6-|-total");
+            Console.WriteLine("-|-(15)         {0}-|-(20)         {1}-|-      {2}-|-(50){3}-|---|-  {4}    -|-     ", 
+            spiller1Scoreboard[10], spiller1Scoreboard[11], spiller1Scoreboard[12], spiller1Scoreboard[13], spiller1Scoreboard[14]);
+
+
+            
+
+
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine("Terning {0}: {1}", (i + 1), terningerVærdi[i]);
+            }
+
+            bool[] muligePar = parCheck(sum1, sum2, sum3, sum4, sum5, sum6);
+            char allocationSelected = '0';
+            bool scoreboardAktiv = true;
+            while (scoreboardAktiv == true)
+            {
+
+                Console.Write("Vælg et punkt: ");
+                allocationSelected = Console.ReadKey(false).KeyChar;
+                if (allocationSelected >= 97 && allocationSelected <= 110)
+                {
+                    scoreboardAktiv = false;
+                    switch (allocationSelected)
+                    {
+                        case 'a' when spiller1Scoreboard[0] == -1:
+                            spiller1Scoreboard[0] = sum1;
+                            Console.WriteLine("Du valgte 1ere: {0} ", spiller1Scoreboard[0]);
+                            break;
+                        case 'b' when spiller1Scoreboard[1] == -1:
+                            spiller1Scoreboard[1] = sum2 * 2;
+                            Console.WriteLine("Du valgte 2ere: {0} ", spiller1Scoreboard[1]);
+                            break;
+                        case 'c' when spiller1Scoreboard[2] == -1:
+                            spiller1Scoreboard[2] = sum3 * 3;
+                            Console.WriteLine("Du valgte 3ere: {0} ", spiller1Scoreboard[2]);
+                            break;
+                        case 'd' when spiller1Scoreboard[3] == -1:
+                            spiller1Scoreboard[3] = sum4 * 4;
+                            Console.WriteLine("Du valgte 4ere: {0} ", spiller1Scoreboard[3]);
+                            break;
+                        case 'e' when spiller1Scoreboard[4] == -1:
+                            spiller1Scoreboard[4] = sum5 * 5;
+                            Console.WriteLine("Du valgte 5ere: {0} ", spiller1Scoreboard[4]);
+                            break;
+                        case 'f' when spiller1Scoreboard[5] == -1:
+                            spiller1Scoreboard[5] = sum6 * 6;
+                            Console.WriteLine("Du valgte 6ere: {0} ", spiller1Scoreboard[5]);
+                            break;
+                        case 'g' when spiller1Scoreboard[6] == -1:
+                            SumOf1Pair(6, spiller1Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
+                            Console.WriteLine("Du valgte 1par: {0} ", spiller1Scoreboard[6]);
+                            break;
+                        case 'h' when spiller1Scoreboard[7] == -1:
+
+                            int antalMuligePar = 0;
+
+                            for (int i = 0; i < 6; i++)
+                            {
+
+
+                                if (muligePar[i])
+                                {
+                                    antalMuligePar += 1;
+
+                                    spiller1Scoreboard[7] += (i + 1) * 2;
+
+                                }
+
+                            }
+
+
+                            if (antalMuligePar < 2)
+                            {
+                                spiller1Scoreboard[7] = 0;
+                                Console.WriteLine("Ingen mulige par");
+                            }
+
+
+
+                            Console.WriteLine("Du valgte 2par: {0} ", spiller1Scoreboard[7]);
+                            break;
+
+                        case 'i' when spiller1Scoreboard[8] == -1:
+                            if (sum1 >= 3) spiller1Scoreboard[8] = 3;
+                            else if (sum2 >= 3) spiller1Scoreboard[8] = 6;
+                            else if (sum3 >= 3) spiller1Scoreboard[8] = 9;
+                            else if (sum4 >= 3) spiller1Scoreboard[8] = 12;
+                            else if (sum5 >= 3) spiller1Scoreboard[8] = 15;
+                            else if (sum6 >= 3) spiller1Scoreboard[8] = 18;
+                            else spiller1Scoreboard[8] = 0;
+
+                            Console.WriteLine("Du valgte 3 ens: {0}", spiller1Scoreboard[8]);
+                            break;
+
+                        case 'j' when spiller1Scoreboard[9] == -1:
+                            if (sum1 >= 4) spiller1Scoreboard[9] = 4;
+                            else if (sum2 >= 4) spiller1Scoreboard[9] = 8;
+                            else if (sum3 >= 4) spiller1Scoreboard[9] = 12;
+                            else if (sum4 >= 4) spiller1Scoreboard[9] = 16;
+                            else if (sum5 >= 4) spiller1Scoreboard[9] = 20;
+                            else if (sum6 >= 4) spiller1Scoreboard[9] = 24;
+                            else spiller1Scoreboard[9] = 0;
+
+                            Console.WriteLine("Du valgte 4 ens: {0}", spiller1Scoreboard[9]);
+                            break;
+
+                        case 'k' when spiller1Scoreboard[10] == -1:
+
+
+                            if (terningerVærdi.Contains(1) && terningerVærdi.Contains(2) && terningerVærdi.Contains(3)
+                               && terningerVærdi.Contains(4) && terningerVærdi.Contains(5))
+                            {
+                                spiller1Scoreboard[10] = 15;
+                                Console.WriteLine("Du valgte lille straight: {0}", spiller1Scoreboard[10]);
+                            }
+                            else
+                            {
+                                spiller1Scoreboard[10] = 0;
+                                Console.WriteLine("Du har ikke et lille straight");
+                            }
+                            break;
+
+                        case 'l' when spiller1Scoreboard[11] == -1:
+                            if (terningerVærdi.Contains(2) && terningerVærdi.Contains(3) && terningerVærdi.Contains(4)
+                                  && terningerVærdi.Contains(5) && terningerVærdi.Contains(6))
+                            {
+                                spiller1Scoreboard[11] = 20;
+                                Console.WriteLine("Du valgte store straight: {0} ", spiller1Scoreboard[11]);
+                            }
+                            else
+                            {
+                                spiller1Scoreboard[11] = 0;
+                                Console.WriteLine("Du har ikke et stort straight");
+                            }
+                            break;
+
+                        case 'm' when spiller1Scoreboard[12] == -1:
+                            int sumAfChancen = 0;
+                            for (int i = 0; i < 5; i++)
+                            {
+                                sumAfChancen += terningerVærdi[i];
+                            }
+                            Console.WriteLine("Du valgte chancen: {0} ", sumAfChancen);
+
+                            spiller1Scoreboard[12] = sumAfChancen;
+                            break;
+
+                        case 'n' when spiller1Scoreboard[13] == -1:
+                            spiller1Scoreboard[13] = 0;
+                            if (terningerVærdi[0] == terningerVærdi[1] && terningerVærdi[1] == terningerVærdi[2]
+                            && terningerVærdi[2] == terningerVærdi[3] && terningerVærdi[3] == terningerVærdi[4])
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    spiller1Scoreboard[13] += terningerVærdi[i];
+                                }
+                                Console.WriteLine("Du valgte yatzy: {0} (bonus {1})", spiller1Scoreboard[13], 50);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Du har ikke yatzy");
+                            }
+
+                            break;
+
+                        default:
+                            scoreboardAktiv = true;
+                            Console.WriteLine("default");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Input ubrugeligt");
+                }
+            }
+
+            return spiller1Scoreboard;
+
+
+        }
+        static int[] scoreboard2(int[] terningerVærdi, string spiller2Navn, int[] spiller2Scoreboard)
+        {
+            int sum1, sum2, sum3, sum4, sum5, sum6;
+
+            sum1 = SumOfNumberOfEyes(1, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum2 = SumOfNumberOfEyes(2, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum3 = SumOfNumberOfEyes(3, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum4 = SumOfNumberOfEyes(4, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum5 = SumOfNumberOfEyes(5, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+            sum6 = SumOfNumberOfEyes(6, terningerVærdi[0], terningerVærdi[1], terningerVærdi[2], terningerVærdi[3], terningerVærdi[4]);
+
+
+
+
+            Console.WriteLine("Tryk Enter for at fortsætte.");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine(spiller2Navn);  //Sæt til variable
+            Console.WriteLine("-|-a-1ere-|-b-2ere-|-c-3ere-|-d-4ere-|-e-5ere-|-f-6ere-|-g-1par-|-h-2par-|-i-3ens-|-j-4ens-|-");
+            Console.WriteLine("-|-   {0}-|-   {1}-|-   {2}-|-   {3}-|-   {4}-|-   {5}-|-   {6}-|-   {7}-|-   {8}-|-   {9}-|-",
+            spiller2Scoreboard[0], spiller2Scoreboard[1], spiller2Scoreboard[2], spiller2Scoreboard[3], spiller2Scoreboard[4],
+            spiller2Scoreboard[5], spiller2Scoreboard[6], spiller2Scoreboard[7], spiller2Scoreboard[8], spiller2Scoreboard[9]);
+            Console.WriteLine("-|-k-lille straight-|-l-store straight-|-m-chancen-|-n-yatzy-|---|-total 1-6-|-total");
+            Console.WriteLine("-|-(15)         {0}-|-(20)         {1}-|-      {2}-|-(50){3}-|---|-  {4}    -|-     ",
+            spiller2Scoreboard[10], spiller2Scoreboard[11], spiller2Scoreboard[12], spiller2Scoreboard[13], spiller2Scoreboard[14]);
+
+
+
+
+
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine("Terning {0}: {1}", (i + 1), terningerVærdi[i]);
+            }
+
+            bool[] muligePar = parCheck(sum1, sum2, sum3, sum4, sum5, sum6);
+
+            char allocationSelected = '0';
+            bool scoreboardAktiv = true;
+            while (scoreboardAktiv == true)
+            {
+                Console.Write("Vælg et punkt: ");
+
+                allocationSelected = Console.ReadKey(false).KeyChar;
+                if (allocationSelected >= 97 && allocationSelected <= 110)
+                {
+                    scoreboardAktiv = false;
+                    switch (allocationSelected)
+                    {
+                        case 'a' when spiller2Scoreboard[0] == -1:
+                            spiller2Scoreboard[0] = sum1;
+                            Console.WriteLine("Du valgte 1ere: {0} ", spiller2Scoreboard[0]);
+                            break;
+                        case 'b' when spiller2Scoreboard[1] == -1:
+                            spiller2Scoreboard[1] = sum2 * 2;
+                            Console.WriteLine("Du valgte 2ere: {0} ", spiller2Scoreboard[1]);
+                            break;
+                        case 'c' when spiller2Scoreboard[2] == -1:
+                            spiller2Scoreboard[2] = sum3 * 3;
+                            Console.WriteLine("Du valgte 3ere: {0} ", spiller2Scoreboard[2]);
+                            break;
+                        case 'd' when spiller2Scoreboard[3] == -1:
+                            spiller2Scoreboard[3] = sum4 * 4;
+                            Console.WriteLine("Du valgte 4ere: {0} ", spiller2Scoreboard[3]);
+                            break;
+                        case 'e' when spiller2Scoreboard[4] == -1:
+                            spiller2Scoreboard[4] = sum5 * 5;
+                            Console.WriteLine("Du valgte 5ere: {0} ", spiller2Scoreboard[4]);
+                            break;
+                        case 'f' when spiller2Scoreboard[5] == -1:
+                            spiller2Scoreboard[5] = sum6 * 6;
+                            Console.WriteLine("Du valgte 6ere: {0} ", spiller2Scoreboard[5]);
+                            break;
+                        case 'g' when spiller2Scoreboard[6] == -1:
+                            SumOf1Pair(6, spiller2Scoreboard, sum1, sum2, sum3, sum4, sum5, sum6);
+                            Console.WriteLine("Du valgte 1 par: {0} ", spiller2Scoreboard[6]);
+                            break;
+                        case 'h' when spiller2Scoreboard[7] == -1:
+                            int antalMuligePar = 0;
+
+                            for (int i = 0; i < 6; i++)
+                            {
+
+
+                                if (muligePar[i])
+                                {
+                                    antalMuligePar += 1;
+
+                                    spiller2Scoreboard[7] += (i + 1) * 2;
+
+                                }
+
+                            }
+
+
+                            if (antalMuligePar < 2)
+                            {
+                                spiller2Scoreboard[7] = 0;
+                                Console.WriteLine("Ingen mulige par");
+                            }
+
+
+
+                            Console.WriteLine("Du valgte 2 par: {0} ", spiller2Scoreboard[7]);
+                            break;
+
+                        case 'i' when spiller2Scoreboard[8] == -1:
+                            if (sum1 >= 3) spiller2Scoreboard[8] = 3;
+                            else if (sum2 >= 3) spiller2Scoreboard[8] = 6;
+                            else if (sum3 >= 3) spiller2Scoreboard[8] = 9;
+                            else if (sum4 >= 3) spiller2Scoreboard[8] = 12;
+                            else if (sum5 >= 3) spiller2Scoreboard[8] = 15;
+                            else if (sum6 >= 3) spiller2Scoreboard[8] = 18;
+                            else spiller2Scoreboard[8] = 0;
+
+                            Console.WriteLine("Du valgte 3 ens: {0} ", spiller2Scoreboard[8]);
+                            break;
+
+                        case 'j' when spiller2Scoreboard[9] == -1:
+                            if (sum1 >= 4) spiller2Scoreboard[9] = 4;
+                            else if (sum2 >= 4) spiller2Scoreboard[9] = 8;
+                            else if (sum3 >= 4) spiller2Scoreboard[9] = 12;
+                            else if (sum4 >= 4) spiller2Scoreboard[9] = 16;
+                            else if (sum5 >= 4) spiller2Scoreboard[9] = 20;
+                            else if (sum6 >= 4) spiller2Scoreboard[9] = 24;
+                            else spiller2Scoreboard[9] = 0;
+
+                            Console.WriteLine("Du valgte 4 ens: {0}", spiller2Scoreboard[9]);
+                            break;
+
+                        case 'k' when spiller2Scoreboard[10] == -1:
+
+
+                            if (terningerVærdi.Contains(1) && terningerVærdi.Contains(2) && terningerVærdi.Contains(3)
+                               && terningerVærdi.Contains(4) && terningerVærdi.Contains(5))
+                            {
+                                spiller2Scoreboard[10] = 15;
+                                Console.WriteLine("Du valgte lille straight: {0} ", spiller2Scoreboard[10]);
+                            }
+                            else
+                            {
+                                spiller2Scoreboard[10] = 0;
+                                Console.WriteLine("Du har ikke et lille straight");
+                            }
+                            break;
+
+                        case 'l' when spiller2Scoreboard[11] == -1:
+                            if (terningerVærdi.Contains(2) && terningerVærdi.Contains(3) && terningerVærdi.Contains(4)
+                                  && terningerVærdi.Contains(5) && terningerVærdi.Contains(6))
+                            {
+                                spiller2Scoreboard[11] = 20;
+                                Console.WriteLine("Du valgte store straight: {0} ", spiller2Scoreboard[11]);
+                            }
+                            else
+                            {
+                                spiller2Scoreboard[11] = 0;
+                                Console.WriteLine("Du har ikke et stort straight");
+                            }
+                            break;
+
+                        case 'm' when spiller2Scoreboard[12] == -1:
+                            int sumAfChancen = 0;
+                            for (int i = 0; i < 5; i++)
+                            {
+                                sumAfChancen += terningerVærdi[i];
+                            }
+                            Console.WriteLine("Du valgte chancen: {0} ", sumAfChancen);
+
+                            spiller2Scoreboard[12] = sumAfChancen;
+                            break;
+
+                        case 'n' when spiller2Scoreboard[13] == -1:
+                            spiller2Scoreboard[13] = 0;
+                            if (terningerVærdi[0] == terningerVærdi[1] && terningerVærdi[1] == terningerVærdi[2]
+                            && terningerVærdi[2] == terningerVærdi[3] && terningerVærdi[3] == terningerVærdi[4])
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    spiller2Scoreboard[13] += terningerVærdi[i];
+                                }
+                                Console.WriteLine("Du valgte yatzy: {0} (bonus {1})", spiller2Scoreboard[13], 50);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Du har ikke yatzy");
+                            }
+
+                            break;
+
+                        default:
+                            Console.WriteLine("default");
+                            scoreboardAktiv = true;
+                            break;
+
+                    }
+
+                }
+            }
+            return spiller2Scoreboard;
+        }
 
     }
 
